@@ -11,13 +11,13 @@ if __name__ =='__main__':
 	alpha = 0.01 #learning rate
 	n_epoch = 500  # number of epochs
 	training_order = 0  #0 for random, 1 for fixed
-	weights = 0 #0 for zero weights or 1 for random weights
+	weights = 1 #0 for zero weights or 1 for random weights
 	
 	validation_data = training_data[4000:]
 	perceptrons = dict() #the different perceptron for each label number
 	finished_training = False
 	for x in range(n_epoch):
-		print 'number of epochs:', x
+		#print 'number of epochs:', x
 		for i in range(0,4000):
 			train_text = training_data[i][0]
 			train_label = int(training_data[i][1])
@@ -31,30 +31,41 @@ if __name__ =='__main__':
 			
 			for j in range(0,10):
 				if j in perceptrons.keys():
+					#percep_x = np.sign(perceptrons[j][0].dot(train_text)+perceptrons[j][1])
+					#print 'curr_perceptron: ', j, 'train_label: ', train_label, 'curr_guess: ', percep_x
+					
 					curr_guess = perceptrons[j][0].dot(train_text)+perceptrons[j][1]
 					if curr_guess > 0:
 						percep_x = 1
 					else:
 						percep_x = 0
+					
 					if j == train_label:
 						label_x = 1
 					else:
 						label_x = 0
 					err = label_x - percep_x
-					print(err)
-					if err is not 0:
+					#print 'error: ',err
+					if err != 0:
 						delta_bias = err
 						perceptrons[j][1] += delta_bias
 						for y in range(len(perceptrons[j][0])):
 							perceptrons[j][0][y] += alpha*err*train_text[y]
-					
+				
+		#print perceptrons[0]
 		
-		
-		num_correct = 0
-		total_num_indices = 0
+		num_correct = 0.0
+		total_num_indices = 0.0
 		for i in validation_data:
 			for j in range(0,10):
-				percep_x = np.sign(perceptrons[j][0].dot(i[0])+perceptrons[j][1])
+				#percep_x = np.sign(perceptrons[j][0].dot(train_text)+perceptrons[j][1])
+								
+				curr_guess = perceptrons[j][0].dot(i[0])+perceptrons[j][1]
+				if curr_guess > 0:
+					percep_x = 1
+				else:
+					percep_x = 0
+				
 				if j == i[1]:
 					label_x = 1
 				else:
@@ -75,6 +86,7 @@ if __name__ =='__main__':
 					num_correct+=1
 				total_num_indices +=1
 			'''
+		print(num_correct/total_num_indices)
 		if (num_correct/total_num_indices) >= .8:
 			finished_training = True
 			print("perceptron finished training, reached 80%")	
