@@ -12,7 +12,7 @@ for i in range(0, 10):
     validation_text = []
     validation_label = []
 
-    classifier = MLPClassifier(activation = 'relu',  max_iter = 100, hidden_layer_sizes = (100,100,100),  alpha = .01,momentum = .9)
+    classifier = MLPClassifier(activation = 'relu',  max_iter = 500, hidden_layer_sizes = (200,200,200),  alpha = .01,momentum = .9)
 
     for j in range(len(training_data)):
         if j % 5 ==i:
