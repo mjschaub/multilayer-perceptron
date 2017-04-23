@@ -1,5 +1,4 @@
 import numpy as np
-import random
 import pickle
 from sklearn.neural_network import MLPClassifier 
 
@@ -30,7 +29,7 @@ for i in range(0, 10):
 
 
 
-    
+
     classifier.fit(train_text, train_label)
 
 
