@@ -17,42 +17,64 @@ if __name__ =='__main__':
 	perceptrons = dict() #the different perceptron for each label number
 	finished_training = False
 	for x in range(n_epoch):
-
+		print 'number of epochs:', x
 		for i in range(0,4000):
 			train_text = training_data[i][0]
-			train_label = training_data[i][1]
-			#print(train_text)
-			#print(train_label)
+			train_label = int(training_data[i][1])
 			weights_arr = []
-			if weights == 0 and x == 0 and train_label is not perceptrons.keys():
-				weights_arr = [np.array([0]*len(train_text)),1]
+			if weights == 0 and x == 0 and train_label not in perceptrons.keys():
+				weights_arr = [np.array([0.0]*len(train_text)),1]
 				perceptrons[train_label] = weights_arr
-			elif x == 0 and train_label is not perceptrons.keys():
+			elif x == 0 and train_label not in perceptrons.keys():
 				weights_arr = [np.random.uniform(low=-1.0, high=1.0, size=len(train_text)),1]
 				perceptrons[train_label] = weights_arr
 			
-			#for j in range(len(weights_arr)):
-			curr_guess = np.sign(weights_arr[0].dot(train_text)+weights_arr[1])
-			err = train_label - curr_guess
-			print(err)
-			if err is not 0:
-				delta_bias = err
-				weights_arr[1] += delta_bias
-				#weights_arr[0] += alpha*err*np.array(train_text)
-				for y in range(len(weights_arr[0])):
-					weights_arr[0][y] += alpha*err*train_text[y]
+			for j in range(0,10):
+				if j in perceptrons.keys():
+					curr_guess = perceptrons[j][0].dot(train_text)+perceptrons[j][1]
+					if curr_guess > 0:
+						percep_x = 1
+					else:
+						percep_x = 0
+					if j == train_label:
+						label_x = 1
+					else:
+						label_x = 0
+					err = label_x - percep_x
+					print(err)
+					if err is not 0:
+						delta_bias = err
+						perceptrons[j][1] += delta_bias
+						for y in range(len(perceptrons[j][0])):
+							perceptrons[j][0][y] += alpha*err*train_text[y]
+					
 		
 		
 		num_correct = 0
 		total_num_indices = 0
 		for i in validation_data:
+			for j in range(0,10):
+				percep_x = np.sign(perceptrons[j][0].dot(i[0])+perceptrons[j][1])
+				if j == i[1]:
+					label_x = 1
+				else:
+					label_x = 0
+				err = label_x - percep_x
+				if err == 0:
+					num_correct+=1
+				total_num_indices+=1
+
+			'''
 			trained_data_to_check = perceptrons[i[1]]
+			#print(trained_data_to_check)
 			validation_arr = i[0]
+			#print(validation_arr)
 			for j in range(len(trained_data_to_check)):
+				
 				if trained_data_to_check[0][j] == validation_arr[j]:
 					num_correct+=1
 				total_num_indices +=1
-
+			'''
 		if (num_correct/total_num_indices) >= .8:
 			finished_training = True
 			print("perceptron finished training, reached 80%")	
