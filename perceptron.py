@@ -21,14 +21,14 @@ if __name__ =='__main__':
 		for i in range(0,4000):
 			train_text = training_data[i][0]
 			train_label = training_data[i][1]
-			print(train_text)
-			print(train_label)
-			weights_arr = ()
+			#print(train_text)
+			#print(train_label)
+			weights_arr = []
 			if weights == 0 and x == 0 and train_label is not perceptrons.keys():
-				weights_arr = ([0]*len(train_text),1)
+				weights_arr = [np.array([0]*len(train_text)),1]
 				perceptrons[train_label] = weights_arr
 			elif x == 0 and train_label is not perceptrons.keys():
-				weights_arr = (np.random.uniform(low=-1.0, high=1.0, size=len(train_text)),1)
+				weights_arr = [np.random.uniform(low=-1.0, high=1.0, size=len(train_text)),1]
 				perceptrons[train_label] = weights_arr
 			
 			#for j in range(len(weights_arr)):
@@ -38,7 +38,9 @@ if __name__ =='__main__':
 			if err is not 0:
 				delta_bias = err
 				weights_arr[1] += delta_bias
-				weight_arr[0] += alpha*err*train_text
+				#weights_arr[0] += alpha*err*np.array(train_text)
+				for y in range(len(weights_arr[0])):
+					weights_arr[0][y] += alpha*err*train_text[y]
 		
 		
 		num_correct = 0
@@ -47,7 +49,7 @@ if __name__ =='__main__':
 			trained_data_to_check = perceptrons[i[1]]
 			validation_arr = i[0]
 			for j in range(len(trained_data_to_check)):
-				if trained_data_to_check[j] == validation_arr[j]:
+				if trained_data_to_check[0][j] == validation_arr[j]:
 					num_correct+=1
 				total_num_indices +=1
 
