@@ -38,7 +38,7 @@ for i in range(0, 10):
     val_num = 0.0
     length = len(val_text)
     for x in range(length):
-        if classifier.predict(val_text[x].reshape(1, -1)) == val_label[x]:
+        if classifier.predict(val_text[x].reshape(1, -1)) == val_label[x]:		#predict needs reshaped to scalar 
             val_num = val_num + 1
     if(length!=0):
 

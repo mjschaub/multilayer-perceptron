@@ -11,7 +11,7 @@ if __name__ =='__main__':
 	alpha = 0.01 #learning rate
 	n_epoch = 500  # number of epochs
 	training_order = 0  #0 for random, 1 for fixed
-	weights = 1 #0 for zero weights or 1 for random weights
+	weights = 0 #0 for zero weights or 1 for random weights
 	
 	validation_data = training_data[4000:]
 	perceptrons = dict() #the different perceptron for each label number
