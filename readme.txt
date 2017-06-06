@@ -5,3 +5,5 @@ traininglabels: a vector of ground truth labels for every digit from trainingima
 testimages: 1000 test digits (around 100 from each class), encoded in the same format as the training digits.
 
 testlabels: ground truth labels for testimages.
+
+The MLP/NN can be found in multilayer_perceptron.py and the final single perceptron is in perceptron_2.py with an earlier, similarly working version being in perceptron.py
